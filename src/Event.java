@@ -4,7 +4,7 @@ public class Event {
     private Double lambda;
     private int id;
 
-    public Event(EventType type, Double timestamp, double lambda){
+    public Event(EventType type, double timestamp, double lambda){
         this.type = type;
         this.timestamp = timestamp;
         this.lambda = lambda;
@@ -12,7 +12,7 @@ public class Event {
 
     public Event(Event e){
         this.type = e.getType();
-        this.timestamp = e.getTimestamp() + Exp.getExp(e.lambda);
+        this.timestamp = (e.getTimestamp() + Exp.getExp(e.getLambda()));
         this.lambda = e.lambda;
     }
 
@@ -32,8 +32,12 @@ public class Event {
         return this.timestamp;
     }
 
+    public Double getLambda(){
+        return this.lambda;
+    }
+
     @Override
     public String toString(){
-        return this.type + ": " + this.timestamp + "\n";
+        return this.type + ": " + this.timestamp;
     }
 }

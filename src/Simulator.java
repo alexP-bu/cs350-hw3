@@ -1,4 +1,6 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Simulator {
 
@@ -10,12 +12,13 @@ public class Simulator {
     private boolean SECONDARY_BUSY = false;
     
     //system variables
-    private static PriorityQueue<Event> timeline = 
+    private static Queue<Event> timeline = 
         new PriorityQueue<Event>
         ((Event e1, Event e2) -> e1.getTimestamp().compareTo(e2.getTimestamp()));
     
     //TODO
-    //private PriorityQueue<Request> request_queue = new PriorityQueue<>();
+    private Queue<Request> PRIMARY_request_queue = new LinkedList<Request>();
+    private Queue<Request> SECONDARY_request_queue = new LinkedList<Request>();
 
     //init simulator
     public Simulator(double a, double b, double c){
@@ -46,7 +49,8 @@ public class Simulator {
     //system event execution simluation
     public void execute(Event event){
         if(event.getType() == EventType.BIRTH){
-            timeline.add(event);
+            //generate next arrival
+            timeline.add(new Event(event));
         }
 
         if(event.getType() == EventType.DEATH){
