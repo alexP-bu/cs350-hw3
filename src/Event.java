@@ -1,6 +1,20 @@
 public class Event {
     private EventType type;
-    private double timestamp;
+    private Double timestamp;
+    private Double lambda;
+    private int id;
+
+    public Event(EventType type, Double timestamp, double lambda){
+        this.type = type;
+        this.timestamp = timestamp;
+        this.lambda = lambda;
+    }
+
+    public Event(Event e){
+        this.type = e.getType();
+        this.timestamp = e.getTimestamp() + Exp.getExp(e.lambda);
+        this.lambda = e.lambda;
+    }
 
     public void setTimestamp(double val){
         this.timestamp = val;
@@ -11,10 +25,15 @@ public class Event {
     }
 
     public EventType getType(){
-        return type;
+        return this.type;
     }
 
-    public double getTimestamp(){
-        return timestamp;
+    public Double getTimestamp(){
+        return this.timestamp;
+    }
+
+    @Override
+    public String toString(){
+        return this.type + ": " + this.timestamp + "\n";
     }
 }

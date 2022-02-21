@@ -6,10 +6,16 @@ public class Simulator {
     private double ARR_RATE;
     private double PRIMARY_AVG_SERVICE_TIME;
     private double SECONDARY_AVG_SERVICE_TIME;
+    private boolean PRIMARY_BUSY = false;
+    private boolean SECONDARY_BUSY = false;
     
     //system variables
-    private PriorityQueue<Event> timeline = new PriorityQueue<>();
-    private PriorityQueue<Request> request_queue = new PriorityQueue<>();
+    private static PriorityQueue<Event> timeline = 
+        new PriorityQueue<Event>
+        ((Event e1, Event e2) -> e1.getTimestamp().compareTo(e2.getTimestamp()));
+    
+    //TODO
+    //private PriorityQueue<Request> request_queue = new PriorityQueue<>();
 
     //init simulator
     public Simulator(double a, double b, double c){
@@ -21,6 +27,7 @@ public class Simulator {
     //simulate!
     public void simulate(double time){
         double timeCounter = 0;
+        timeline.add(new Event(EventType.BIRTH, timeCounter, ARR_RATE));
         while(timeCounter < time){
             //get latest event
             Event event = timeline.poll();
@@ -39,7 +46,7 @@ public class Simulator {
     //system event execution simluation
     public void execute(Event event){
         if(event.getType() == EventType.BIRTH){
-
+            timeline.add(event);
         }
 
         if(event.getType() == EventType.DEATH){
@@ -54,9 +61,9 @@ public class Simulator {
     /*
     * (a) length of simulation time in milliseconds. This should be passed directly as the time parameter
     * (to the simulate(...) function.
-    * (b) average arrival rate of requests at the system;
-    * (c) average service time at the primary server;
-    * (d) average service time at the secondary server;
+    * (b) average arrival rate of requests at the system
+    * (c) average service time at the primary server
+    * (d) average service time at the secondary server
     */
     public static void main(String[] args) {
         double a = Double.parseDouble(args[0]);
