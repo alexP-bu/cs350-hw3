@@ -10,6 +10,7 @@ public class Simulator {
     private double SECONDARY_AVG_SERVICE_TIME;
     private boolean PRIMARY_BUSY = false;
     private boolean SECONDARY_BUSY = false;
+    private double curTime;
     
     //system variables
     private static Queue<Event> timeline = 
@@ -29,9 +30,9 @@ public class Simulator {
 
     //simulate!
     public void simulate(double time){
-        double timeCounter = 0;
-        timeline.add(new Event(EventType.BIRTH, timeCounter, ARR_RATE));
-        while(timeCounter < time){
+        curTime = 0;
+        timeline.add(new Event(EventType.BIRTH, curTime, ARR_RATE));
+        while(curTime < time){
             //get latest event
             Event event = timeline.poll();
 
@@ -39,7 +40,7 @@ public class Simulator {
             System.out.println(event);
 
             //advance time
-            timeCounter = event.getTimestamp();
+            curTime = event.getTimestamp();
 
             //execute event
             execute(event);
@@ -51,6 +52,7 @@ public class Simulator {
         if(event.getType() == EventType.BIRTH){
             //generate next arrival
             timeline.add(new Event(event));
+            PRIMARY_request_queue.add(new Request(curTime));
         }
 
         if(event.getType() == EventType.DEATH){

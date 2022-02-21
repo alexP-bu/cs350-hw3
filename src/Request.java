@@ -3,6 +3,10 @@ public class Request {
     private double startTime;
     private double finishTime;
 
+    public Request(double arrTime){
+        this.arrivalTime = arrTime;
+    }
+
     public double getArrivalTime(){
         return arrivalTime;
     }

@@ -8,12 +8,14 @@ public class Event {
         this.type = type;
         this.timestamp = timestamp;
         this.lambda = lambda;
+        this.id = 0;
     }
 
     public Event(Event e){
         this.type = e.getType();
         this.timestamp = (e.getTimestamp() + Exp.getExp(e.getLambda()));
         this.lambda = e.lambda;
+        this.id = e.getId() + 1;
     }
 
     public void setTimestamp(double val){
@@ -36,8 +38,12 @@ public class Event {
         return this.lambda;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
     @Override
     public String toString(){
-        return this.type + ": " + this.timestamp;
+        return "R" + this.id + " " + this.type + ": " + this.timestamp;
     }
 }
