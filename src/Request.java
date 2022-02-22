@@ -1,60 +1,74 @@
-public class Request {
-    private double arrivalTime;
-    private double startTime;
-    private double finishTime;
-    private double nextTime;
+import java.util.HashMap;
+
+/***************************************************/
+/* CS-350 Spring 2022 - Homework 2 - Code Solution   */
+/* Author: Renato Mancuso (BU)                     */
+/*                                                 */
+/* Description: This class implements the logic of */
+/*   a single request flowing through multiple     */
+/*   system resources. It keeps a set of           */
+/*   statistics for each of traversed resource.    */
+/*                                                 */
+/***************************************************/
+
+class Request {
+    private EventGenerator _at;
     private int id;
+    private static int unique_ID = 0;
+    private HashMap<EventGenerator, Stats> stats = new HashMap<EventGenerator, Stats>();
+    
+    public Request (EventGenerator created_at) {
+	this._at = created_at;
+	this.id = unique_ID;
+	unique_ID++;
 
-    public Request(int id, double arrTime){
-        this.id = id;
-        this.arrivalTime = arrTime;
+	this.stats.put(this._at, new Stats());
     }
 
-    public double getArrivalTime(){
-        return arrivalTime;
+    public void moveTo(EventGenerator at) {
+	this._at = at;
+	this.stats.put(this._at, new Stats());
     }
 
-    public double getStartTime(){
-        return startTime;
+    public EventGenerator where() {
+	return this._at;
     }
 
-    public double getFinishTime(){
-        return finishTime;
+    @Override
+    public String toString() {
+        return "R" + this.id;
+    }
+    
+    public void recordArrival(Double ts) {
+	Stats curStats = this.stats.get(this._at);
+	curStats.arrival = ts;
     }
 
-    public double getNextTime(){
-        return nextTime;
+    public void recordServiceStart(Double ts) {
+	Stats curStats = this.stats.get(this._at);
+	curStats.serviceStart = ts;
     }
 
-    public int getId(){
-        return id;
+    public void recordDeparture(Double ts) {
+	Stats curStats = this.stats.get(this._at);
+	curStats.departure = ts;
     }
 
-    public void setArrivalTime(double time){
-        this.arrivalTime = time;
+    public Double getArrival() {
+	Stats curStats = this.stats.get(this._at);
+	return curStats.arrival;
     }
 
-    public void setStartTime(double time){
-        this.startTime = time;
+    public Double getServiceStart() {
+	Stats curStats = this.stats.get(this._at);
+	return curStats.serviceStart;
     }
 
-    public void setFinishTime(double time){
-        this.finishTime = time;
+    public Double getDeparture() {
+	Stats curStats = this.stats.get(this._at);
+	return curStats.departure;
     }
 
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public void setNextTime(double nextTime){
-        this.nextTime = nextTime;
-    }
-
-    public void start(int serverId) {
-        if(serverId == 0){
-            System.out.println("R" + this.id + " START 0: " + startTime);
-        }else{
-            System.out.println("R" + this.id + " START 1: " + startTime);
-        }
-    }
 }
+
+/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */

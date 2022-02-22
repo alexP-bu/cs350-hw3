@@ -1,17 +1,19 @@
+/***************************************************/
+/* CS-350 Spring 2022 - Homework 2 - Code Solution   */
+/* Author: Renato Mancuso (BU)                     */
+/*                                                 */
+/* Description: This enum captures the typical     */
+/*   types that can be associated to simulation    */
+/*   events, namely: BIRTH = arrival; DEATH =      */
+/*   departure; MONITOR = snapshot of statistics.  */
+/*                                                 */
+/***************************************************/
+
 public enum EventType {
-    BIRTH("ARR"),
-    NEXT("NEXT 1"),
-    DEATH("DONE 1"),
-    MONITOR("MONITOR");
-
-    private String name;
-
-    private EventType(String type){
-        this.name = type;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
+    BIRTH,
+    NEXT,
+    DEATH,
+    MONITOR
 }
+
+/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */

@@ -1,56 +1,68 @@
-public class Event {
+/***************************************************/
+/* CS-350 Spring 2022 - Homework 2 - Code Solution   */
+/* Author: Renato Mancuso (BU)                     */
+/*                                                 */
+/* Description: This class implements the logic of */
+/*   a single event that can be sorted in time.    */
+/*   Each event is uniquely identified via an ID   */
+/*   and a type. Each event also has a timestamp   */
+/*   and a request the event refers to.            */
+/*                                                 */
+/***************************************************/
+
+public class Event implements Comparable<Event> {
+
     private EventType type;
-    private Double timestamp;
-    private Double lambda;
-    private int id;
-
-    public Event(EventType type, double timestamp, double lambda, int id){
+    private Double ts;
+    private Request rq;
+    private EventGenerator source;
+    
+    /* Verbose constructor (with request) */
+    public Event(EventType type, Request rq, Double ts, EventGenerator source) {
+        super();
         this.type = type;
-        this.timestamp = timestamp;
-        this.lambda = lambda;
-        this.id = id;
+        this.ts = ts;
+	this.rq = rq;
+	this.source = source;
+    }
+    
+    /* Generate next event given a previous event of the same type */
+    public Event(Event evt, Double IAT) {
+        super();
+	this.type = evt.type;
+	this.ts = evt.ts + Exp.getExp(1/IAT);
+	this.rq = evt.rq;
+    }
+    
+    @Override
+    public int compareTo(Event evt) {
+        return this.getTimestamp().compareTo(evt.getTimestamp());
     }
 
-    public Event(EventType type, double timestamp, double lambda){
-        this.type = type;
-        this.timestamp = timestamp;
-        this.lambda = lambda;
-        this.id = 0;
+    /* timestamp getter */
+    public Double getTimestamp() {
+	return this.ts;
     }
 
-    public Event(Event e){
-        this.type = e.type;
-        this.timestamp = (e.getTimestamp() + Exp.getExp(e.getLambda()));
-        this.lambda = e.lambda;
-        this.id = e.getId() + 1;
+    /* type getter */
+    public EventType getType() {
+	return this.type;
     }
 
-    public void setTimestamp(double val){
-        this.timestamp = val;
+    /* Request getter */
+    public Request getRequest() {
+	return this.rq;
     }
 
-    public void setType(EventType type){
-        this.type = type;
-    }
-
-    public EventType getType(){
-        return this.type;
-    }
-
-    public Double getTimestamp(){
-        return this.timestamp;
-    }
-
-    public Double getLambda(){
-        return this.lambda;
-    }
-
-    public int getId(){
-        return this.id;
+    /* Event source block getter */
+    public EventGenerator getSource() {
+	return this.source;
     }
 
     @Override
-    public String toString(){
-        return "R" + this.id + " " + this.type + ": " + this.timestamp;
+    public String toString() {
+        return this.rq.toString() + type + ": " + ts;
     }
 }
+
+/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */
