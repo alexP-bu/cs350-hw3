@@ -2,6 +2,7 @@ public class Request {
     private double arrivalTime;
     private double startTime;
     private double finishTime;
+    private double nextTime;
     private int id;
 
     public Request(int id, double arrTime){
@@ -21,7 +22,11 @@ public class Request {
         return finishTime;
     }
 
-    public double getId(){
+    public double getNextTime(){
+        return nextTime;
+    }
+
+    public int getId(){
         return id;
     }
 
@@ -41,14 +46,15 @@ public class Request {
         this.id = id;
     }
 
+    public void setNextTime(double nextTime){
+        this.nextTime = nextTime;
+    }
+
     public void start(int serverId) {
-        switch(serverId){
-            case 0:
-                System.out.println("R" + this.id + " START 0: " + startTime);
-                break;
-            case 1:
-                System.out.println("R" + this.id + " START 1: " + startTime);
-                break;
+        if(serverId == 0){
+            System.out.println("R" + this.id + " START 0: " + startTime);
+        }else{
+            System.out.println("R" + this.id + " START 1: " + startTime);
         }
     }
 }

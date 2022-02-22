@@ -4,6 +4,13 @@ public class Event {
     private Double lambda;
     private int id;
 
+    public Event(EventType type, double timestamp, double lambda, int id){
+        this.type = type;
+        this.timestamp = timestamp;
+        this.lambda = lambda;
+        this.id = id;
+    }
+
     public Event(EventType type, double timestamp, double lambda){
         this.type = type;
         this.timestamp = timestamp;
