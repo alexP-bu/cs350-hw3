@@ -12,7 +12,7 @@ public class Event {
     }
 
     public Event(Event e){
-        this.type = e.getType();
+        this.type = e.type;
         this.timestamp = (e.getTimestamp() + Exp.getExp(e.getLambda()));
         this.lambda = e.lambda;
         this.id = e.getId() + 1;

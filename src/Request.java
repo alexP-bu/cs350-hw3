@@ -2,8 +2,10 @@ public class Request {
     private double arrivalTime;
     private double startTime;
     private double finishTime;
+    private int id;
 
-    public Request(double arrTime){
+    public Request(int id, double arrTime){
+        this.id = id;
         this.arrivalTime = arrTime;
     }
 
@@ -19,6 +21,10 @@ public class Request {
         return finishTime;
     }
 
+    public double getId(){
+        return id;
+    }
+
     public void setArrivalTime(double time){
         this.arrivalTime = time;
     }
@@ -29,5 +35,20 @@ public class Request {
 
     public void setFinishTime(double time){
         this.finishTime = time;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public void start(int serverId) {
+        switch(serverId){
+            case 0:
+                System.out.println("R" + this.id + " START 0: " + startTime);
+                break;
+            case 1:
+                System.out.println("R" + this.id + " START 1: " + startTime);
+                break;
+        }
     }
 }

@@ -1,5 +1,8 @@
 public enum EventType {
-    BIRTH("ARR"), DEATH("DONE"), MONITOR("MONITOR");
+    BIRTH("ARR"),
+    NEXT("NEXT 1"),
+    DEATH("DONE"),
+    MONITOR("MONITOR");
 
     private String name;
 
