@@ -16,6 +16,7 @@ class Request {
     private int id;
     private static int unique_ID = 0;
     private HashMap<EventGenerator, Stats> stats = new HashMap<EventGenerator, Stats>();
+    private int visits = 0;
     
     public Request (EventGenerator created_at) {
 	this._at = created_at;
@@ -67,6 +68,14 @@ class Request {
     public Double getDeparture() {
 	Stats curStats = this.stats.get(this._at);
 	return curStats.departure;
+    }
+
+    public void addVisit(){
+        visits++;
+    }
+
+    public int getVisits(){
+        return visits;
     }
 
 }

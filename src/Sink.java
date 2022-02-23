@@ -11,17 +11,30 @@
 
 class Sink extends EventGenerator {
 
+    private double completedReq = 0.0;
+    private double totalVisits = 0;
+
     public Sink(Timeline timeline) {
-	super(timeline);
+	    super(timeline);
     }
     
     @Override
     void receiveRequest(Event evt) {
-	super.receiveRequest(evt);
+	    super.receiveRequest(evt);
+    
+        //add 1 to completed requests
+        completedReq++;
+        System.out.println("done");
+        //add to total visited
+        totalVisits += evt.getRequest().getVisits();
+    }
 
-	/* Print the occurrence of this event */
-	System.out.println(evt.getRequest() + " DONE 1: " + evt.getTimestamp());	
+    public double getCompleted(){
+        return completedReq;
+    }
 
+    public double getTotalVisits(){
+        return totalVisits;
     }
         
 }

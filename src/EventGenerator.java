@@ -13,6 +13,7 @@ class EventGenerator {
 
     protected Timeline timeline;
     protected EventGenerator next;
+    protected EventGenerator prev;
 
     public EventGenerator(Timeline timeline) {
 	this.timeline = timeline;
@@ -27,12 +28,15 @@ class EventGenerator {
 
     /* Function that is used to signify the departure of a new request
      * from the event generator */
-    void releaseRequest(Event evt) {}
+    void releaseRequest(Event evt) {
+        //do nothing
+    }
 
     /* Function to set the next hop for requests departing from this
      * event generetor block */
     void routeTo(EventGenerator next) {
 	this.next = next;
+    this.next.prev = this;
     }
 
     /* Connect EventGenerator to corresponding timeline if not done by
@@ -67,11 +71,11 @@ class EventGenerator {
     }
 
     void printUtil(Double time){
-
+        //do nothing
     }
 
     void printQLen(){
-
+        //do nothing
     }
 
 }

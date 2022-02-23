@@ -17,6 +17,8 @@ class SimpleServer extends EventGenerator {
 	private int id;
     private LinkedList<Request> theQueue = new LinkedList<Request>();
     private Double servTime;
+	private double p0;
+	private double p1;
 
     /* Statistics of this server --- to construct rolling averages */
     private Double cumulQ = 0.0;
@@ -27,9 +29,11 @@ class SimpleServer extends EventGenerator {
     private int snapCount = 0;
     private int servedReqs = 0;
     
-    public SimpleServer (int id, Timeline timeline, Double servTime) {
+    public SimpleServer (int id, Timeline timeline, Double servTime, double p0, double p1) {
 	super(timeline);
 	this.id = id;
+	this.p0 = p0;
+	this.p1 = p1;
 	/* Initialize the average service time of this server */
 	this.servTime = servTime;
     }
@@ -55,6 +59,9 @@ class SimpleServer extends EventGenerator {
 
 	Request curRequest = evt.getRequest();
 
+	//add visit count to request
+	curRequest.addVisit();
+
 	curRequest.recordArrival(evt.getTimestamp());
 	
 	/* Upon receiving the request, check the queue size and act
@@ -78,11 +85,6 @@ class SimpleServer extends EventGenerator {
 	assert curRequest == queueHead;
 
 	curRequest.recordDeparture(evt.getTimestamp());
-
-	/* Print the occurrence of this event if server id is 0*/
-	if(this.id == 0){
-		System.out.println(evt.getRequest() + " NEXT 1: " + evt.getTimestamp());	
-	}
 	
 	/* Update busyTime */
 	busyTime += curRequest.getDeparture() - curRequest.getServiceStart();
@@ -94,7 +96,29 @@ class SimpleServer extends EventGenerator {
 	servedReqs++;
 	
 	assert super.next != null;
-	super.next.receiveRequest(evt);
+
+	//this area of code is what 'sends' the request to the next server.
+	//so, with pr[p0] route request from server 0 to sink
+	//and with pr[p1] route request form server 1 to server 0 
+	double rand = Math.random();
+	if(this.id == 0){
+		if(rand <= p0){
+			System.out.println(evt.getRequest() + " DONE 0: " + evt.getTimestamp());
+			super.next.next.receiveRequest(evt);
+		}else{
+			//Print the occurrence of this event
+			System.out.println(evt.getRequest() + " NEXT 1: " + evt.getTimestamp());
+			super.next.receiveRequest(evt);
+		}
+	}else if(this.id == 1){
+		if(rand <= p1){
+			System.out.println(evt.getRequest() + " DONE 1: " + evt.getTimestamp());
+			super.next.receiveRequest(evt);
+		}else{
+			System.out.println(evt.getRequest() + " NEXT 0: " + evt.getTimestamp());
+			super.prev.receiveRequest(evt);
+		}
+	}
 	
 	/* Any new request to put into service?  */
 	if(!theQueue.isEmpty()) {
@@ -126,10 +150,12 @@ class SimpleServer extends EventGenerator {
 	System.out.println("WLEN " + this.id + ": "+ cumulW/snapCount);
     }
 
+	@Override
 	public void printUtil(Double time){
 		System.out.println("UTIL " + this.id + ": " + busyTime/time);
 	}
 
+	@Override
 	public void printQLen(){
 		System.out.println("QLEN " + this.id + ": " + cumulQ/snapCount);
 	}

@@ -25,6 +25,8 @@ public class Simulator {
 	this.resources.add(resource);
     }
 
+    public static Sink trafficSink;
+
     /* This method creates a new monitor in the simulator. To collect
      * all the necessary statistics, we need at least one monitor. */
     private void addMonitor() {
@@ -77,13 +79,14 @@ public class Simulator {
 	resources.get(1).printUtil(now);
 	resources.get(0).printQLen();
 	resources.get(1).printQLen();
-	SimpleServer server_0 = (SimpleServer) resources.get(0);
-	SimpleServer server_1 = (SimpleServer) resources.get(1);
-	double avg_tresp = (server_0.getTRESP() + server_1.getTRESP());
-	double avg_wait = (server_0.getTWAIT() + server_1.getTWAIT());
-	System.out.println("TRESP: " + avg_tresp);
-	System.out.println("TWAIT: " + avg_wait);
-
+	SimpleServer server0 = (SimpleServer) resources.get(0);
+	SimpleServer server1 = (SimpleServer) resources.get(1);
+	double avgTRESP = (server0.getTRESP() + server1.getTRESP());
+	double avgWait = (server0.getTWAIT() + server1.getTWAIT());
+    double runs = trafficSink.getTotalVisits() / trafficSink.getCompleted();
+	System.out.println("TRESP: " + avgTRESP);
+	System.out.println("TWAIT: " + avgWait);
+    System.out.println("RUNS: " + runs);
 	
 	
     }
@@ -96,6 +99,8 @@ public class Simulator {
 	double lambda = Double.valueOf(args[1]);
 	double servTime_0 = Double.valueOf(args[2]);
 	double servTime_1 =Double.valueOf(args[3]);
+    double p0 = Double.valueOf(args[4]);
+    double p1 = Double.valueOf(args[5]);
 
 	/* Create a new simulator instance */
 	Simulator sim = new Simulator();
@@ -104,11 +109,11 @@ public class Simulator {
 	Source trafficSource = new Source(sim.timeline, lambda);
 	    
 	/* Create a new traffic sink */
-	Sink trafficSink = new Sink(sim.timeline);
+	trafficSink = new Sink(sim.timeline);
 
 	/* Create new single-cpu processing server */
-	SimpleServer server_0 = new SimpleServer(0, sim.timeline, servTime_0);
-	SimpleServer server_1 = new SimpleServer(1, sim.timeline, servTime_1);
+	SimpleServer server_0 = new SimpleServer(0, sim.timeline, servTime_0, p0, p1);
+	SimpleServer server_1 = new SimpleServer(1, sim.timeline, servTime_1, p0, p1);
 
 	/* Establish routing */
 	trafficSource.routeTo(server_0);
