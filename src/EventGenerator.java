@@ -35,6 +35,7 @@ class EventGenerator {
      * from the event generator
      */
     void releaseRequest(Event evt) {
+        //do nothing here, servers run requests
     }
 
     /*
@@ -81,14 +82,6 @@ class EventGenerator {
         /* Do nothing */
     }
 
-    void printUtil(Double time) {
-
-    }
-
-    void printQLen() {
-
-    }
-
     public int getID(){
         return id;
     }
@@ -97,5 +90,3 @@ class EventGenerator {
         this.id = x;
     }
 }
-
-/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */

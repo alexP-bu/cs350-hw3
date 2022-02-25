@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 /***************************************************/
-/* CS-350 Spring 2022 - Homework 2 - Code Solution   */
+/* CS-350 Spring 2022 - Homework 2 - Code Solution */
 /* Author: Renato Mancuso (BU)                     */
 /*                                                 */
 /* Description: This class implements the logic of */
@@ -72,59 +72,47 @@ public class Simulator {
 	}
 
 	/* Print all the statistics */
-	resources.get(0).printUtil(now);
-	resources.get(1).printUtil(now);
-	resources.get(0).printQLen();
-	resources.get(1).printQLen();
-	SimpleServer server_0 = (SimpleServer) resources.get(0);
-	SimpleServer server_1 = (SimpleServer) resources.get(1);
-	double avg_tresp = (server_0.getTRESP() + server_1.getTRESP());
-	double avg_wait = (server_0.getTWAIT() + server_1.getTWAIT());
-	System.out.println("TRESP: " + avg_tresp);
-	System.out.println("TWAIT: " + avg_wait);
+	SimpleServer server0 = (SimpleServer) resources.get(0);
+	SimpleServer server1 = (SimpleServer) resources.get(1);
 	Sink theSink = (Sink) resources.get(2);
-	double runs = theSink.getVPR();
-	System.out.println("RUNS: "+ runs);
+	server0.printUtil(now);
+	server1.printUtil(now);
+	server0.printQLen();
+	server1.printQLen();
+	System.out.println("TRESP: " + (server0.getTRESP() + server1.getTRESP()));
+	System.out.println("TWAIT: " + (server0.getTWAIT() + server1.getTWAIT()));
+	System.out.println("RUNS: "+ theSink.getVPR());
 	
 	
     }
     
     /* Entry point for the entire simulation  */
     public static void main (String[] args) {
-
-	/* Parse the input parameters */
-	double simTime = Double.valueOf(args[0]);
-	double lambda = Double.valueOf(args[1]);
-	double servTime_0 = Double.valueOf(args[2]);
-	double servTime_1 =Double.valueOf(args[3]);
-
 	/* Create a new simulator instance */
 	Simulator sim = new Simulator();
 	
 	/* Create the traffic source */
-	Source trafficSource = new Source(sim.timeline, lambda);
+	Source trafficSource = new Source(sim.timeline, Double.parseDouble(args[1]));
 	    
 	/* Create a new traffic sink */
 	Sink trafficSink = new Sink(sim.timeline);
 
 	/* Create new single-cpu processing server */
-	SimpleServer server_0 = new SimpleServer(0, sim.timeline, servTime_0, Double.valueOf(args[4]));
-	SimpleServer server_1 = new SimpleServer(1, sim.timeline, servTime_1, Double.valueOf(args[5]));
+	SimpleServer server0 = new SimpleServer(0, sim.timeline, Double.parseDouble(args[2]), Double.parseDouble(args[4]));
+	SimpleServer server1 = new SimpleServer(1, sim.timeline, Double.parseDouble(args[3]), Double.parseDouble(args[5]));
 
 	/* Establish routing */
-	trafficSource.routeTo(server_0);
-	server_0.routeTo(server_1);
-	server_1.routeTo(trafficSink);
+	trafficSource.routeTo(server0);
+	server0.routeTo(server1);
+	server1.routeTo(trafficSink);
 
 	/* Add resources to be monitored */
-	sim.addMonitoredResource(server_0);
-	sim.addMonitoredResource(server_1);
+	sim.addMonitoredResource(server0);
+	sim.addMonitoredResource(server1);
 	sim.addMonitoredResource(trafficSink);
 	
 	/* Kick off simulation */
-	sim.simulate(simTime);	
+	sim.simulate(Double.parseDouble(args[0]));	
     }
     
 }
-
-/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */

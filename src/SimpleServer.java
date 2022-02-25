@@ -15,8 +15,8 @@ import java.util.*;
 class SimpleServer extends EventGenerator {
 
 	private LinkedList<Request> theQueue = new LinkedList<Request>();
-	private Double servTime;
-	private Double splitProb;
+	private double servTime;
+	private double splitProb;
 
 	/* Statistics of this server --- to construct rolling averages */
 	private Double cumulQ = 0.0;
@@ -102,7 +102,7 @@ class SimpleServer extends EventGenerator {
 			/* Print the occurrence of this event if server id is 0*/
 			System.out.println(evt.getRequest() + " DONE 0: " + evt.getTimestamp());	
 			super.next.next.receiveRequest(evt);
-		} else if ((this.id == 0) && (rand > this.splitProb)){
+		} else if (this.id == 0){
 			//send request to next server for processing
 			/* Print the occurrence of this event if server id is 0*/
 			System.out.println(evt.getRequest() + " NEXT 1: " + evt.getTimestamp());	
@@ -113,6 +113,7 @@ class SimpleServer extends EventGenerator {
 			super.prev.receiveRequest(evt);
 		} else {
 			//send it to sink; finished
+			System.out.println(evt.getRequest() + " DONE 1: " + evt.getTimestamp());
 			super.next.receiveRequest(evt);
 		}
 
@@ -170,5 +171,3 @@ class SimpleServer extends EventGenerator {
 		return splitProb;
 	}
 }
-
-/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */
