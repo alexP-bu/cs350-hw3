@@ -68,8 +68,7 @@ public class Simulator {
 	    EventGenerator block = evt.getSource();
 
 	    /* Handle event */
-	    block.processEvent(evt);
-	    
+	    block.processEvent(evt);    
 	}
 
 	/* Print all the statistics */
@@ -83,7 +82,9 @@ public class Simulator {
 	double avg_wait = (server_0.getTWAIT() + server_1.getTWAIT());
 	System.out.println("TRESP: " + avg_tresp);
 	System.out.println("TWAIT: " + avg_wait);
-
+	Sink theSink = (Sink) resources.get(2);
+	double runs = theSink.getVPR();
+	System.out.println("RUNS: "+ runs);
 	
 	
     }
@@ -107,8 +108,8 @@ public class Simulator {
 	Sink trafficSink = new Sink(sim.timeline);
 
 	/* Create new single-cpu processing server */
-	SimpleServer server_0 = new SimpleServer(0, sim.timeline, servTime_0);
-	SimpleServer server_1 = new SimpleServer(1, sim.timeline, servTime_1);
+	SimpleServer server_0 = new SimpleServer(0, sim.timeline, servTime_0, Double.valueOf(args[4]));
+	SimpleServer server_1 = new SimpleServer(1, sim.timeline, servTime_1, Double.valueOf(args[5]));
 
 	/* Establish routing */
 	trafficSource.routeTo(server_0);
@@ -118,6 +119,7 @@ public class Simulator {
 	/* Add resources to be monitored */
 	sim.addMonitoredResource(server_0);
 	sim.addMonitoredResource(server_1);
+	sim.addMonitoredResource(trafficSink);
 	
 	/* Kick off simulation */
 	sim.simulate(simTime);	

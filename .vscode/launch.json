@@ -30,7 +30,7 @@
             "request": "launch",
             "mainClass": "Simulator",
             "projectName": "cs350-hw3_3fc5adb5",
-            "args": "100 0.8 1 1"
+            "args": "20 0.8 1 1"
         }
     ]
 }

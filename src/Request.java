@@ -16,57 +16,67 @@ class Request {
     private int id;
     private static int unique_ID = 0;
     private HashMap<EventGenerator, Stats> stats = new HashMap<EventGenerator, Stats>();
-    
-    public Request (EventGenerator created_at) {
-	this._at = created_at;
-	this.id = unique_ID;
-	unique_ID++;
 
-	this.stats.put(this._at, new Stats());
+    private int serverVisits = 0;
+
+    public Request(EventGenerator created_at) {
+        this._at = created_at;
+        this.id = unique_ID;
+        unique_ID++;
+
+        this.stats.put(this._at, new Stats());
     }
 
     public void moveTo(EventGenerator at) {
-	this._at = at;
-	this.stats.put(this._at, new Stats());
+        //if the eventgenerator is a server, increment the number of servers visted
+        if(at.getID() != -1){
+            serverVisits++;
+        }
+        this._at = at;
+        this.stats.put(this._at, new Stats());
     }
 
     public EventGenerator where() {
-	return this._at;
+        return this._at;
     }
 
     @Override
     public String toString() {
         return "R" + this.id;
     }
-    
+
     public void recordArrival(Double ts) {
-	Stats curStats = this.stats.get(this._at);
-	curStats.arrival = ts;
+        Stats curStats = this.stats.get(this._at);
+        curStats.arrival = ts;
     }
 
     public void recordServiceStart(Double ts) {
-	Stats curStats = this.stats.get(this._at);
-	curStats.serviceStart = ts;
+        Stats curStats = this.stats.get(this._at);
+        curStats.serviceStart = ts;
     }
 
     public void recordDeparture(Double ts) {
-	Stats curStats = this.stats.get(this._at);
-	curStats.departure = ts;
+        Stats curStats = this.stats.get(this._at);
+        curStats.departure = ts;
     }
 
     public Double getArrival() {
-	Stats curStats = this.stats.get(this._at);
-	return curStats.arrival;
+        Stats curStats = this.stats.get(this._at);
+        return curStats.arrival;
     }
 
     public Double getServiceStart() {
-	Stats curStats = this.stats.get(this._at);
-	return curStats.serviceStart;
+        Stats curStats = this.stats.get(this._at);
+        return curStats.serviceStart;
     }
 
     public Double getDeparture() {
-	Stats curStats = this.stats.get(this._at);
-	return curStats.departure;
+        Stats curStats = this.stats.get(this._at);
+        return curStats.departure;
+    }
+
+    public int getVisitCount(){
+        return serverVisits;
     }
 
 }
