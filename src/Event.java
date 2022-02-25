@@ -16,24 +16,24 @@ public class Event implements Comparable<Event> {
     private Double ts;
     private Request rq;
     private EventGenerator source;
-    
+
     /* Verbose constructor (with request) */
     public Event(EventType type, Request rq, Double ts, EventGenerator source) {
         super();
         this.type = type;
         this.ts = ts;
-	this.rq = rq;
-	this.source = source;
+        this.rq = rq;
+        this.source = source;
     }
-    
+
     /* Generate next event given a previous event of the same type */
     public Event(Event evt, Double IAT) {
         super();
-	this.type = evt.type;
-	this.ts = evt.ts + Exp.getExp(1/IAT);
-	this.rq = evt.rq;
+        this.type = evt.type;
+        this.ts = evt.ts + Exp.getExp(1 / IAT);
+        this.rq = evt.rq;
     }
-    
+
     @Override
     public int compareTo(Event evt) {
         return this.getTimestamp().compareTo(evt.getTimestamp());
@@ -41,22 +41,22 @@ public class Event implements Comparable<Event> {
 
     /* timestamp getter */
     public Double getTimestamp() {
-	return this.ts;
+        return this.ts;
     }
 
     /* type getter */
     public EventType getType() {
-	return this.type;
+        return this.type;
     }
 
     /* Request getter */
     public Request getRequest() {
-	return this.rq;
+        return this.rq;
     }
 
     /* Event source block getter */
     public EventGenerator getSource() {
-	return this.source;
+        return this.source;
     }
 
     @Override
@@ -65,4 +65,3 @@ public class Event implements Comparable<Event> {
     }
 }
 
-/* END -- Q1BSR1QgUmVuYXRvIE1hbmN1c28= */
